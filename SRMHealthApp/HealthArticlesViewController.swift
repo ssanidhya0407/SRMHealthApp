@@ -1,10 +1,3 @@
-//
-//  HealthArticlesViewController.swift
-//  SRMHealthApp
-//
-//  Created by Sanidhya's MacBook Pro on 11/03/25.
-//
-
 import UIKit
 import FirebaseFirestore
 
@@ -84,6 +77,8 @@ class HealthArticleTableViewCell: UITableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -91,6 +86,8 @@ class HealthArticleTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .gray
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -104,23 +101,23 @@ class HealthArticleTableViewCell: UITableViewCell {
     }
     
     func setupViews() {
-        addSubview(titleLabel)
-        addSubview(categoryLabel)
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(categoryLabel)
         
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
-            categoryLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            categoryLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            categoryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            categoryLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            categoryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            categoryLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
     
     func configure(with article: HealthArticle) {
         titleLabel.text = article.title
-        categoryLabel.text = article.category
+        categoryLabel.text = "Category: \(article.category)"
     }
 }

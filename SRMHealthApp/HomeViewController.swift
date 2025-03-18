@@ -1,10 +1,3 @@
-//
-//  HomeViewController.swift
-//  SRMHealthApp
-//
-//  Created by Sanidhya's MacBook Pro on 11/03/25.
-//
-
 import FirebaseAuth
 import UIKit
 
@@ -29,6 +22,7 @@ class HomeViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(labTestsTapped), for: .touchUpInside)
         return button
     }()
@@ -40,6 +34,7 @@ class HomeViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(medicinesTapped), for: .touchUpInside)
         return button
     }()
@@ -51,6 +46,7 @@ class HomeViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(findDocTapped), for: .touchUpInside)
         return button
     }()
@@ -62,6 +58,7 @@ class HomeViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(healthArticlesTapped), for: .touchUpInside)
         return button
     }()
@@ -73,7 +70,20 @@ class HomeViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(orderDetailsTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    let cartButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("🛒 Cart", for: .normal)
+        button.backgroundColor = .systemTeal
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(cartTapped), for: .touchUpInside)
         return button
     }()
     
@@ -81,6 +91,7 @@ class HomeViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Logout", for: .normal)
         button.tintColor = .blue
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
         return button
     }()
@@ -99,6 +110,7 @@ class HomeViewController: UIViewController {
         contentView.addSubview(findDocButton)
         contentView.addSubview(healthArticlesButton)
         contentView.addSubview(orderDetailsButton)
+        contentView.addSubview(cartButton)
         contentView.addSubview(logoutButton)
         
         NSLayoutConstraint.activate([
@@ -138,8 +150,13 @@ class HomeViewController: UIViewController {
             orderDetailsButton.widthAnchor.constraint(equalToConstant: 250),
             orderDetailsButton.heightAnchor.constraint(equalToConstant: 50),
             
+            cartButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            cartButton.topAnchor.constraint(equalTo: orderDetailsButton.bottomAnchor, constant: 20),
+            cartButton.widthAnchor.constraint(equalToConstant: 250),
+            cartButton.heightAnchor.constraint(equalToConstant: 50),
+            
             logoutButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            logoutButton.topAnchor.constraint(equalTo: orderDetailsButton.bottomAnchor, constant: 20),
+            logoutButton.topAnchor.constraint(equalTo: cartButton.bottomAnchor, constant: 20),
             logoutButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50)
         ])
     }
@@ -167,6 +184,11 @@ class HomeViewController: UIViewController {
     @objc func orderDetailsTapped() {
         let orderDetailsVC = OrderDetailsViewController()
         navigationController?.pushViewController(orderDetailsVC, animated: true)
+    }
+    
+    @objc func cartTapped() {
+        let cartVC = CartViewController()
+        navigationController?.pushViewController(cartVC, animated: true)
     }
     
     @objc func logoutTapped() {

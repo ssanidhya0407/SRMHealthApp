@@ -5,7 +5,6 @@
 //  Created by Sanidhya's MacBook Pro on 11/03/25.
 //
 
-
 import UIKit
 import FirebaseAuth
 
@@ -50,6 +49,14 @@ class LoginViewController: UIViewController {
         button.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         return button
     }()
+    
+    let forgotPasswordButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Forgot Password?", for: .normal)
+        button.tintColor = .red
+        button.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,12 +70,14 @@ class LoginViewController: UIViewController {
         view.addSubview(passwordTextField)
         view.addSubview(loginButton)
         view.addSubview(signUpButton)
+        view.addSubview(forgotPasswordButton)
         
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         signUpButton.translatesAutoresizingMaskIntoConstraints = false
+        forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -90,7 +99,10 @@ class LoginViewController: UIViewController {
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             
             signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20)
+            signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20),
+            
+            forgotPasswordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            forgotPasswordButton.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 10)
         ])
     }
     
@@ -117,8 +129,24 @@ class LoginViewController: UIViewController {
         navigationController?.pushViewController(signUpVC, animated: true)
     }
     
+    @objc func forgotPasswordTapped() {
+        guard let email = usernameTextField.text, !email.isEmpty else {
+            showAlert(message: "Please enter your email address")
+            return
+        }
+        
+        Auth.auth().sendPasswordReset(withEmail: email) { [weak self] error in
+            guard let self = self else { return }
+            if let error = error {
+                self.showAlert(message: error.localizedDescription)
+                return
+            }
+            self.showAlert(message: "Password reset email sent successfully")
+        }
+    }
+    
     private func showAlert(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Notification", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
